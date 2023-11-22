@@ -17,15 +17,16 @@ const MovieDetailsModal = (props) => {
     Poster,
     imdbRating,
     Type,
+    imdbID,
   } = props.details;
-  const { handleMovieBoxClose } = props;
+  const { handleMovieBoxClose, addToWatchList } = props;
   return (
     <div className="movie-details-modal">
       <section className="poster">
         <img
           src={Poster}
           className="opened-poster"
-          height={430}
+          height="100%"
           alt="movie detailed"
         />
       </section>
@@ -39,10 +40,17 @@ const MovieDetailsModal = (props) => {
           <p className="movie-details-text">{`Actors : ${Actors}`}</p>
           <p className="movie-details-text">{`Language : ${Language}`}</p>
           <p className="movie-details-text">{`Imdb Rating : ${imdbRating}`}</p>
+          <p className="movie-details-text">{`Plot : ${Plot}`}</p>
         </article>
-        <article className="movie-plot">
-          <p className="movie-details-text">{Plot}</p>
-        </article>
+        {/* <article className="movie-plot">
+          
+        </article> */}
+        <section className="button-section">
+          <button className="add" onClick={() => addToWatchList(props.details)}>
+            Add to Watch List
+          </button>
+          <button className="watched">Already Watched ? Rate</button>
+        </section>
       </section>
       <button className="close-button" onClick={handleMovieBoxClose}>
         Close

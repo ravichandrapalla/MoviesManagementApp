@@ -118,6 +118,28 @@ const MovieFinder = () => {
     setMovieDetailsModalVisible(false);
     setSelectedMovie(null);
   };
+  const addToWatchList = (movie) => {
+    // Get existing watchlist from localStorage
+    const existingWatchList =
+      JSON.parse(localStorage.getItem("watchList")) || [];
+
+    // Check if the movie is already in the watchlist
+    const isMovieInWatchList = existingWatchList.some(
+      (m) => m.imdbID === movie.imdbID
+    );
+
+    if (!isMovieInWatchList) {
+      // Add the new movie to the watchlist
+      const updatedWatchList = [...existingWatchList, movie];
+
+      // Save the updated watchlist back to localStorage
+      localStorage.setItem("watchList", JSON.stringify(updatedWatchList));
+
+      console.log("Watchlist updated:", updatedWatchList);
+    } else {
+      console.log("Movie already in the watchlist");
+    }
+  };
 
   return (
     <>
@@ -155,6 +177,7 @@ const MovieFinder = () => {
               <MovieDetailsModal
                 details={currentMovieDetails}
                 handleMovieBoxClose={handleMovieBoxClick}
+                addToWatchList={(movieDetails) => addToWatchList(movieDetails)}
               />
             )}
           </main>

@@ -28,6 +28,8 @@ header {
   font-size: 1.2rem;
   height: 1em;
   width: 23em;
+  color: black;
+  background-color: white;
 }
 
 .input-container {
@@ -305,21 +307,14 @@ footer {
   align-items: center;
 }
 
-/* .outer-container {
-  height: 70%;
-  width: 70%;
-  background-color: green;
-  border-radius: 15px;
-} */
-
 .movie-details-modal {
   position: absolute;
   border-radius: 5px;
   background-color: red;
   justify-content: space-between;
   display: flex;
-  width: 80%;
-  height: 80%;
+  max-width: 80%;
+  max-height: 80%;
   top: 50px;
   left: 10%;
   margin: auto;
@@ -328,7 +323,11 @@ footer {
 .details {
   display: flex;
   flex-direction: column;
-  margin: 1rem;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  max-width: 65%;
 }
 
 .poster {
@@ -336,6 +335,7 @@ footer {
   padding: 1rem;
   border-radius: 10px;
   background-color: aqua;
+  max-width: 35%;
 }
 
 .poster img {
@@ -355,15 +355,36 @@ footer {
 .movie-info {
   display: flex;
   flex-direction: column;
+  margin: 1rem 0rem;
   padding: 1rem;
-  height: 50%;
-  background-color: aliceblue;
+  height: 80%;
   justify-content: flex-start;
   align-items: flex-start;
   border-radius: 3px;
+  background-color: blue;
 }
+
+.button-section {
+  display: flex;
+  justify-content: space-around;
+}
+
+.add,
+.watched {
+  padding: 1rem;
+  margin: 1rem;
+  font-size: 1.5rem;
+  transition: transform 0.5s ease;
+}
+.add:hover,
+.watched:hover {
+  transform: scale(
+    1.2
+  ); /* Make the .add button bigger and .watched smaller on hover */
+}
+
 .movie-plot {
-  height: 50%;
+  height: 40%;
   background-color: green;
 }
 
