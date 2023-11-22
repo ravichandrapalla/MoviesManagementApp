@@ -1,11 +1,13 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { FaSearch } from "react-icons/fa";
 import "../global/global.css";
+import useDebounce from "./debounce";
 
 const SearchBar = ({ setSearchTitle }) => {
   const inputRef = useRef();
+
   const handleEnter = (e) => {
     if (e.key === "Enter") {
       setSearchTitle(inputRef.current.value);
@@ -19,11 +21,9 @@ const SearchBar = ({ setSearchTitle }) => {
         placeholder="Search for a Movie"
         ref={inputRef}
         onKeyDown={handleEnter}
+        onChange={(e) => setSearchTitle(e.target.value)}
       ></input>
-      <button
-        className="search-btn"
-        onClick={(e) => setSearchTitle(inputRef.current.value)}
-      >
+      <button className="search-btn">
         <FaSearch id="search-icon" size={10} />
       </button>
     </div>

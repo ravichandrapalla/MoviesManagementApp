@@ -2,12 +2,13 @@
 import { useEffect, useState } from "react";
 import "../global/global.css";
 import { ImMenu } from "react-icons/im";
-import { getMovieDetails, searchMovie } from "../services/api";
+import { defaultSearch, getMovieDetails, searchMovie } from "../services/api";
 import MovieBox from "../components/MovieBox";
 import SearchBar from "../components/SearchBar";
 import NavLinks from "../components/NavLinks";
 import Loading from "../components/Loading";
 import MovieDetailsModal from "../components/MovieDetailsModal";
+import useDebounce from "../components/debounce";
 
 const MovieFinder = () => {
   const [searchTitle, setSearchTitle] = useState("");
@@ -25,9 +26,31 @@ const MovieFinder = () => {
     "link-3",
     "link-4",
   ]);
+  const debouncedSearchTitle = useDebounce(searchTitle, 1000);
+
+  useEffect(() => setSearchTitle(debouncedSearchTitle), [debouncedSearchTitle]);
+  useEffect(() => {
+    defaultSearch(new Date().getFullYear())
+      .then((resp) => {
+        // console.log(resp);
+        if (resp && resp.data && resp.data.Response === "True") {
+          setError("");
+          setIsLoading(false);
+          setMovies(resp.data.Search);
+          setTotalMovies(Number(resp.data.totalResults));
+        } else if (resp && resp.data && resp.data.Response === "False") {
+          setError(resp.data.Error);
+          setIsLoading(false);
+          setMovies([]);
+          setTotalMovies(0);
+          console.log("in else", resp.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   useEffect(() => {
-    if (searchTitle) {
+    if (debouncedSearchTitle) {
       setMovieDetailsModalVisible(false);
       setSelectedMovie(null);
       setIsLoading(true);
@@ -48,9 +71,11 @@ const MovieFinder = () => {
           }
         })
         .catch((err) => console.log(err));
+    } else {
+      setError("please enter a title to search for");
     }
     // console.log("search title", searchTitle);
-  }, [searchTitle]);
+  }, [debouncedSearchTitle]);
 
   useEffect(() => {
     if (selectedMovie) {
@@ -81,9 +106,7 @@ const MovieFinder = () => {
     navLinks.classList.toggle("visible");
   };
   const handleSearch = (searchText) => {
-    if (searchText) {
-      setSearchTitle(searchText);
-    }
+    setSearchTitle(searchText);
   };
   const handleMovieBoxClicked = (imdbId) => {
     setSelectedMovie(imdbId);
