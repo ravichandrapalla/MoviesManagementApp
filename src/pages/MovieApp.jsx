@@ -9,6 +9,7 @@ import NavLinks from "../components/NavLinks";
 import Loading from "../components/Loading";
 import MovieDetailsModal from "../components/MovieDetailsModal";
 import useDebounce from "../components/debounce";
+import Home from "./Home";
 
 const MovieFinder = () => {
   const [searchTitle, setSearchTitle] = useState("");
@@ -16,6 +17,7 @@ const MovieFinder = () => {
   const [totalMovies, setTotalMovies] = useState(0);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [currentMovieDetails, setCurrentMovieDetails] = useState({});
+  const [currentTab, setCurrentTab] = useState("Home");
   const [movieDetailsModalVisible, setMovieDetailsModalVisible] =
     useState(false);
   const [error, setError] = useState("");
@@ -26,6 +28,9 @@ const MovieFinder = () => {
     "link-3",
     "link-4",
   ]);
+  const [likedMovies, setLikedMovies] = useState(
+    JSON.parse(localStorage.getItem("watchList")) || []
+  );
   const debouncedSearchTitle = useDebounce(searchTitle, 1000);
 
   useEffect(() => setSearchTitle(debouncedSearchTitle), [debouncedSearchTitle]);
@@ -146,7 +151,10 @@ const MovieFinder = () => {
       <header>
         <SearchBar setSearchTitle={(text) => handleSearch(text)} />
         <ImMenu color="green" size={30} id="menu" onClick={handleMenuClick} />
-        <NavLinks list={navList} />
+        <NavLinks
+          list={navList}
+          setCurrentTab={(item) => setCurrentTab(item)}
+        />
       </header>
       {isloading ? (
         <main className="loading">
@@ -154,7 +162,41 @@ const MovieFinder = () => {
         </main>
       ) : (
         <>
-          <article className="total-tag">
+          {currentTab === "Home" && (
+            <Home
+              totalMovies={totalMovies}
+              searchTitle={searchTitle}
+              movies={movies}
+              handleMovieBoxClicked={handleMovieBoxClicked}
+              movieDetailsModalVisible={movieDetailsModalVisible}
+              currentMovieDetails={currentMovieDetails}
+              handleMovieBoxClick={handleMovieBoxClick}
+            />
+          )}
+          {currentTab === "Watch List" && (
+            <section>
+              <ul className="liked-movies-container">
+                {likedMovies?.map((movie) => (
+                  <li key={movie.imdbID}>
+                    <article className="watch-list-movie">
+                      <img
+                        src={movie.Poster}
+                        alt="image"
+                        className="watch-list-image"
+                        width={80}
+                      ></img>
+                      <section className="watch-list-details">
+                        <span>{movie.Title}</span>
+                        <span>{movie.Year}</span>
+                      </section>
+                    </article>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {/* <article className="total-tag">
             {totalMovies ? (
               <span className="results-success-text">{`Found ${totalMovies} Results for "${searchTitle}"`}</span>
             ) : (
@@ -180,7 +222,7 @@ const MovieFinder = () => {
                 addToWatchList={(movieDetails) => addToWatchList(movieDetails)}
               />
             )}
-          </main>
+          </main> */}
         </>
       )}
       <footer>

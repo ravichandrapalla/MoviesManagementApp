@@ -3,7 +3,7 @@
 import React from "react";
 import "../global/global.css";
 
-const NavLinks = ({ list }) => {
+const NavLinks = ({ list, setCurrentTab }) => {
   const getUrl = (text) => {
     // switch (text) {
     //   case "Home": {
@@ -24,7 +24,7 @@ const NavLinks = ({ list }) => {
         {list?.map((item) => {
           return (
             <li className="nav-links" key={item}>
-              <a className="anchor" href="/watch-list">
+              <a className="anchor" onClick={() => setCurrentTab(item)}>
                 {item}
               </a>
             </li>

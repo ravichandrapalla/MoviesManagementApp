@@ -11,7 +11,7 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<MovieFinder />} />
-          <Route path="/watch-list" element={<LikedMovies />} />
+          {/* <Route path="/watch-list" element={<LikedMovies />} /> */}
         </Routes>
       </div>
     </Provider>
