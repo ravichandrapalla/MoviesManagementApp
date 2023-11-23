@@ -21,8 +21,8 @@ const MovieFinder = () => {
   const [error, setError] = useState("");
   const [isloading, setIsLoading] = useState(false);
   const [navList, setNavList] = useState([
-    "link-1",
-    "link-2",
+    "Home",
+    "Watch List",
     "link-3",
     "link-4",
   ]);
